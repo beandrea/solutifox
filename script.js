@@ -30,7 +30,7 @@ inquirer.prompt([
         type: "list",
         name: "contact",
         message: "How do you want to be contacted for any questions?",
-        choices: ["Github, Email"]
+        choices: ["Github", "Email"]
     }, {
         type: "input",
         name: "contactMeth",
