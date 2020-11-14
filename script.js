@@ -54,16 +54,16 @@ inquirer.prompt([
         console.error(err));
 
     function writeMD() {
-        const file = dependancy.toLowerCase() === "none" ? `#${project}
+        var file = dependancy === "None" ? `#${project}
                 #${shortDescrip}` : `#Dependancies: ${dependLst}
                 #${project} 
                 #${shortDescrip}`
 
-        file += contributors.toLowerCase() === "none" ? `#Repo: ${repo}
+        file += contributors === "None" ? `#Repo: ${repo}
                 #URL: ${site}
                 #Contact @ ${contact}: ${contactMeth}
                 #Installation: ${install}
-                #License(s): ${license}` : `#Contributors: ${contribLst}
+                #License(s): ${license}` : `\n#Contributors: ${contribLst}
                 #Repo: ${repo}
                 #URL: ${site}
                 #Contact @ ${contact}: ${contactMeth}
