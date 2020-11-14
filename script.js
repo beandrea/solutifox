@@ -1,6 +1,5 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-const { resolve } = require('path');
 
 inquirer.prompt([
     {
@@ -12,89 +11,65 @@ inquirer.prompt([
         name: "shortDescrip",
         message: "A short description of the project: "
     }, {
+        type: "input",
+        name: "dependLst",
+        message: "Please list in a single line any and all dependancies (or put None): "
+    }, {
+        type: "input",
+        name: "contribLst",
+        message: "Please list in a single line any and all contributor's github URLs (or put None): "
+    }, {
+        type: "input",
+        name: "repo",
+        message: "What is the working github repo URL for the project?"
+    }, {
+        type: "input",
+        name: "site",
+        message: "What is the site URL?"
+    }, {
         type: "list",
-        name: "dependancy",
-        message: "Was this project created using any dependancies?",
-        choices: ["Yes", "No"]
+        name: "contact",
+        message: "How do you want to be contacted for any questions?",
+        choices: ["Github, Email"]
+    }, {
+        type: "input",
+        name: "contactMeth",
+        message: "Your chosen contact info: "
+    }, {
+        type: "input",
+        name: "install",
+        message: "How would a user install this project?"
+    }, {
+        type: "checkbox",
+        name: "license",
+        message: "Does this project require any licenses, if so list them: ",
+        choices: ["None", "MIT", "Apache", "IBM", "ISC"]
     }
 ]).then((answers) => {
-    await depend(answers);
+    const fileName = `${answers.project}_README.md`;
+    const { project, shortDescrip, dependancy, dependLst, contributors,
+        contribLst, repo, site, contact, contactMeth, install, license} = answers;
 
-    inquirer.prompt([
-        {
-            type: "list",
-            name: "contributors",
-            message: "Did this project have any contributors?",
-            choices: ["Yes", "No"]
-        }
-    ]).then((answers) => {
-        await contribute(answers);
+    fs.writeFile(fileName, writeMD(), (err) =>
+        console.error(err));
 
-        inquirer.prompt([
-            {
-                type: "input",
-                name: "repo",
-                message: "What is the working github repo URL for the project?"
-            }, {
-                type: "input",
-                name: "site",
-                message: "What is the site URL?"
-            }
-        ]).then((answers) => {
-            const fileName = `${answers.project}_README.md`;
-            const { project, shortDescrip, dependancy, dependLst, contributors,
-                contribLst, repo, site } = answers;
-
-            fs.writeFile(fileName, writeMD(), (err) =>
-                console.error(err));
-
-            function writeMD() {
-                const file = dependancy === "Yes" ? `#${project}
-                #${shortDescrip}
-                #Dependancies: ${dependLst}` : `#${project} 
+    function writeMD() {
+        const file = dependancy.toLowerCase() === "none" ? `#${project}
+                #${shortDescrip}` : `#Dependancies: ${dependLst}
+                #${project} 
                 #${shortDescrip}`
 
-                file += contributors === "Yes" ? `#Contributors: ${contribLst}
+        file += contributors.toLowerCase() === "none" ? `#Repo: ${repo}
+                #URL: ${site}
+                #Contact @ ${contact}: ${contactMeth}
+                #Installation: ${install}
+                #License(s): ${license}` : `#Contributors: ${contribLst}
                 #Repo: ${repo}
-                #URL: ${site}` : `#Repo: ${repo}
-                #URL: ${site}`
+                #URL: ${site}
+                #Contact @ ${contact}: ${contactMeth}
+                #Installation: ${install}
+                #License(s): ${license}`
 
-                return file;
-            }
-        });
-    });
+        return file;
+    }
 });
-
-async function depend(answers) {
-    if (answers.dependancy === "Yes") {
-        inquirer.prompt([
-            {
-                type: "input",
-                name: "dependLst",
-                message: "Please list in a single line any and all dependancies: "
-            }
-        ]).then((answer) => {
-            return new Promise(resolve => {
-                answer
-            });
-        });
-    }
-    return new Promise(resolve => {});
-}
-
-async function contribute(answers) {
-    if (answers.contributors === "Yes") {
-        inquirer.prompt([
-            {
-                type: "input",
-                name: "contribLst",
-                message: "Please list in a single line any and all contributor's github URLs: "
-            }
-        ]).then((answer) => {
-            return new Promise(resolve => {
-                answer
-            });
-        });
-    }
-    return new Promise(resolve => {});
-}
