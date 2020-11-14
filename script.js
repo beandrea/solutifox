@@ -1,5 +1,13 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const LicenseBadges = {
+    None: "",
+    Apache : "https://img.shields.io/badge/License-Apache%202.0-blue.svg",
+    MIT: "https://img.shields.io/badge/License-MIT-yellow.svg",
+    ISC: "https://img.shields.io/badge/License-ISC-blue.svg",
+    IBM: "https://img.shields.io/badge/License-IPL%201.0-blue.svg"
+};
+
 
 inquirer.prompt([
     {
@@ -40,7 +48,7 @@ inquirer.prompt([
         name: "install",
         message: "How would a user install this project?"
     }, {
-        type: "checkbox",
+        type: "list",
         name: "license",
         message: "Does this project require any licenses, if so list them: ",
         choices: ["None", "MIT", "Apache", "IBM", "ISC"]
@@ -54,21 +62,14 @@ inquirer.prompt([
         console.error(err));
 
     function writeMD() {
-        var file = dependancy === "None" ? `#${project}
-                #${shortDescrip}` : `#Dependancies: ${dependLst}
-                #${project} 
-                #${shortDescrip}`
+        var file = dependancy === "None" ? `# ${project}\n# Description: ${shortDescrip}\n` : 
+            `# ${project}\n# Description: ${shortDescrip}\n# Dependancies: ${dependLst}`
 
-        file += contributors === "None" ? `#Repo: ${repo}
-                #URL: ${site}
-                #Contact @ ${contact}: ${contactMeth}
-                #Installation: ${install}
-                #License(s): ${license}` : `\n#Contributors: ${contribLst}
-                #Repo: ${repo}
-                #URL: ${site}
-                #Contact @ ${contact}: ${contactMeth}
-                #Installation: ${install}
-                #License(s): ${license}`
+        file += contributors === "None" ? 
+            `# Repo: ${repo}\n# URL: ${site}\n# Contact @ ${contact}: ${contactMeth}\n# Installation: ${install}\n` : 
+            `# Contributors: ${contribLst}\n# Repo: ${repo}\n#URL: ${site}\n# Contact @ ${contact}: ${contactMeth}\n# Installation: ${install}\n`
+                
+        file += license === "None" ? `# License: ${license}\n# Badge: ${LicenseBadges[license]}` : ""
 
         return file;
     }
