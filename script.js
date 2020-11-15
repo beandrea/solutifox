@@ -55,21 +55,21 @@ inquirer.prompt([
     }
 ]).then((answers) => {
     const fileName = `${answers.project}_README.md`;
-    const { project, shortDescrip, dependancy, dependLst, contributors,
-        contribLst, repo, site, contact, contactMeth, install, license} = answers;
+    const { project, shortDescrip, dependLst, contribLst, repo, 
+        site, contact, contactMeth, install, license} = answers;
 
     fs.writeFile(fileName, writeMD(), (err) =>
         console.error(err));
 
     function writeMD() {
-        var file = dependancy === "None" ? `# ${project}\n# Description: ${shortDescrip}\n` : 
+        var file = dependLst === "None" ? `# ${project}\n# Description: ${shortDescrip}\n` : 
             `# ${project}\n# Description: ${shortDescrip}\n# Dependancies: ${dependLst}`
 
-        file += contributors === "None" ? 
+        file += contribLst === "None" ? 
             `# Repo: ${repo}\n# URL: ${site}\n# Contact @ ${contact}: ${contactMeth}\n# Installation: ${install}\n` : 
-            `# Contributors: ${contribLst}\n# Repo: ${repo}\n#URL: ${site}\n# Contact @ ${contact}: ${contactMeth}\n# Installation: ${install}\n`
+            `# Contributors: ${contribLst}\n# Repo: ${repo}\n# URL: ${site}\n# Contact @ ${contact}: ${contactMeth}\n# Installation: ${install}\n`
                 
-        file += license === "None" ? `# License: ${license}\n# Badge: ${LicenseBadges[license]}` : ""
+        file += license !== "None" ? `# License: ${license}\n# Badge: ${LicenseBadges[license]}` : ""
 
         return file;
     }
