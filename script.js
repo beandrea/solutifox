@@ -63,7 +63,7 @@ inquirer.prompt([
 
     function writeMD() {
         var file = dependLst === "None" ? `# ${project}\n# Description: ${shortDescrip}\n` : 
-            `# ${project}\n# Description: ${shortDescrip}\n# Dependancies: ${dependLst}`
+            `# ${project}\n# Description: ${shortDescrip}\n# Dependancies: ${dependLst}\n`
 
         file += contribLst === "None" ? 
             `# Repo: ${repo}\n# URL: ${site}\n# Contact @ ${contact}: ${contactMeth}\n# Installation: ${install}\n` : 
