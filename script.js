@@ -62,10 +62,10 @@ inquirer.prompt([
         console.error(err));
 
     function writeMD() {
-        var file = dependLst === "None" ? `# ${project}\n# Description: ${shortDescrip}\n` : 
+        var file = dependLst === "None" || dependLst === "none" ? `# ${project}\n# Description: ${shortDescrip}\n` : 
             `# ${project}\n# Description: ${shortDescrip}\n# Dependancies: ${dependLst}\n`
 
-        file += contribLst === "None" ? 
+        file += contribLst === "None" || contribLst === "none"? 
             `# Repo: ${repo}\n# URL: ${site}\n# Contact @ ${contact}: ${contactMeth}\n# Installation: ${install}\n` : 
             `# Contributors: ${contribLst}\n# Repo: ${repo}\n# URL: ${site}\n# Contact @ ${contact}: ${contactMeth}\n# Installation: ${install}\n`
                 
